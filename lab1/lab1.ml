@@ -44,9 +44,13 @@ let rec last2 (xs: 'a list) : 'a option =
 
        What is the polymorphic type of this function?
 *)
-let last_two (xs:'a list) : 'a * 'a =
-  failwith "last_two not implemented yet"
+let rec last_two (xs: 'a list) : 'a * 'a =
+  match xs with
+  | [x; y] -> (x, y)
+  | _ :: xs -> last_two xs
+  | _ -> failwith "less than two elements";;
 
+(* 'a list -> 'a * 'a *)
 
 (* 
   Q4 : Write a recursive function to sort a list of numbers
