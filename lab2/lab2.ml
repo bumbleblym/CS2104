@@ -33,25 +33,28 @@ let last2 (xs: 'a list) : 'a =
   Consider the insertion sort method below.  
   Re-implement the two methods using List.fold_right.
 *)
-
 let rec insert x ys =
   match ys with
-    | [] -> [x]
-    | y::ys -> 
-          if x<=y then x::y::ys
-          else y::(insert x ys);;
+  | [] -> [x]
+  | y :: ys as xs ->
+      if x <= y then x :: xs
+      else y :: insert x ys;;
 
 let rec sort xs =
   match xs with
   | [] -> []
-  | y::ys -> insert y (sort ys);;
+  | y :: ys -> insert y (sort ys);;
 
 (* replace failwith by your code *)
-let insert2 x ys =
-  failwith "to be implemented using List.fold_right"
+let rec insert2 x ys =
+  match ys with
+  | [] -> [x]
+  | y :: ys as xs ->
+    if x <= y then x :: xs
+    else y :: List.fold_right insert2 [x] ys;;
 
 let sort2 xs =
-  failwith "to be implemented using List.fold_right"
+  List.fold_right insert2 xs [];;
 
 (* 
   Q3 : You can compute the average of a list of
