@@ -66,7 +66,11 @@ let sort2 xs =
 
 (* replace failwith by your code *)
 let average (xs: int list) : float =
-  failwith "average to be computed with a single fold_left"
+  let sum xs =
+    match xs with
+    | [] -> failwith "empty list"
+    | x :: xs -> List.fold_left (fun acc x -> acc + x) x xs
+  in float_of_int (sum xs) /. float_of_int (List.length xs);;
 
 (* 
   Q4 : Using Pipeline
