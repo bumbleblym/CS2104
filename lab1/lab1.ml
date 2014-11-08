@@ -16,9 +16,13 @@
 
        What is the polymorphic type of this function?
 *)
-let last (xs:'a list) : 'a = 
-  failwith "last not implemented yet"
+let rec last (xs: 'a list) : 'a =
+  match xs with
+  | [] -> failwith "empty list"
+  | [x] -> x
+  | _ :: xs -> last xs;;
 
+(* 'a list -> 'a *)
 
 (* 
   Q2 : Change the last function to one with the following
