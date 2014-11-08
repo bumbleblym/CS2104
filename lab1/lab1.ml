@@ -223,7 +223,10 @@ let power2 (x: int) (n: int) : int =
        How does this compare with the cryptic version of the code
        shown in Lecture 1.
 *)
-let power3 (x:int) (n:int) : int =
-  let rec aux x n acc = 
-    failwith "power3 is yet to be implemented"
-  in aux x n 1
+let power3 (x: int) (n: int) : int =
+  assert (n >= 0);
+  let rec aux x n acc =
+    if n == 0 then acc
+    else if n mod 2 == 0 then aux (x * x) (n / 2) acc
+    else aux (x * x) (n / 2) (acc * x)
+  in aux x n 1;;
