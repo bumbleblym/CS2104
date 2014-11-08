@@ -28,3 +28,12 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# OCaml files
+**/Makefile
+**/OCamlMakefile
+**/._d/
+**/executable
+**/*.annot
+**/*.cmi
+**/*.cmo
