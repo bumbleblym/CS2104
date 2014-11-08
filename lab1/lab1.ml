@@ -31,8 +31,11 @@ let rec last (xs: 'a list) : 'a =
        last element of the list. If the list is empty, you
        should return None.
 *)
-let last2 (xs: 'a list) : 'a option = 
-  failwith "last2 not implemented yet"
+let rec last2 (xs: 'a list) : 'a option =
+  match xs with
+  | [] -> None
+  | [x] -> Some x
+  | _ :: xs -> last2 xs;;
 
 (* 
   Q3 : Write a recursive function that would return the
