@@ -186,10 +186,12 @@ let flatten_prefix (t: 'a btree) : 'a list =
        What happens to your function if you had used
        a negative n value?
 *)
-let rec power (x:int) (n:int) : int =
-  if n==0 then 1
-  else n * (power x (n-1))
+let rec power (x: int) (n: int) : int =
+  assert (n >= 0);
+  if n == 0 then 1
+  else x * power x (n -1);;
 
+(* An exception is thrown due to assert failure. *)
 
 (* 
   Q9 : 
