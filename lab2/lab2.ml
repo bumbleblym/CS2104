@@ -221,29 +221,47 @@ Node 4
   Leaf 2
 
 *)
-
-let pr_tree (pr:'a->string) (xs:'a tree) : string 
- = let rec aux xs = 
+let pr_tree (pr: 'a -> string) (xs: 'a tree) : string =
+  let rec aux xs =
     match xs with
-    | Leaf e -> "Leaf "^(pr e)^("\n")
-    | Node (e,lt,rt) -> 
-        "Node "^(pr e)^("\n")
-         ^(aux lt)^(aux rt)
+    | Leaf e -> "Leaf " ^ pr e ^ "\n"
+    | Node (e, lt, rt) ->
+        "Node " ^ pr e ^ "\n"
+        ^ aux lt ^ aux rt
   in aux xs;;
 
 (* please change failwith .. to your implementation *)
-let pr_tree2 (pr:'a->string) (xs:'a tree) : string 
-  = failwith "neat tree printer with nested indentation"
-  
+let rec fold_tree_acc
+    (f1: 'a -> 'c -> 'b)
+    (f2: 'a -> 'b -> 'b -> 'c -> 'b)
+    (f3 : 'c -> 'c)
+    (acc : 'c)
+    (t: 'a tree) : 'b =
+  match t with
+  | Leaf v -> f1 v acc
+  | Node (v, lt, rt) ->
+      f2 v
+        (fold_tree_acc f1 f2 f3 (f3 acc) lt)
+        (fold_tree_acc f1 f2 f3 (f3 acc) rt)
+        acc;;
+
+let pr_tree2 (pr: 'a -> string) (xs: 'a tree) : string =
+  let f1 v acc = acc ^ "Leaf " ^ pr v ^ "\n" in
+  let f2 v lt rt acc = acc ^ "Node " ^ pr v ^ "\n" ^ lt ^ rt in
+  let f3 acc = acc ^ "  " in
+  fold_tree_acc f1 f2 f3 "" xs;;
+
 (* please change failwith .. to your implementation *)
-let pr_tree_infix (pr:'a->string) (xs:'a tree) : string 
-  = failwith "neat tree printer with nested indentation in infix form"
-  
+let pr_tree_infix (pr: 'a -> string) (xs: 'a tree) : string =
+  let f1 v acc = acc ^ "Leaf " ^ pr v ^ "\n" in
+  let f2 v lt rt acc = lt ^ acc ^ "Node " ^ pr v ^ "\n" ^ rt in
+  let f3 acc = acc ^ "  " in
+  fold_tree_acc f1 f2 f3 "" xs;;
+
 let test t =
   print_endline (pr_tree string_of_int t);
   print_endline (pr_tree2 string_of_int t);
   print_endline (pr_tree_infix string_of_int t);;
-
 
 (*
 
