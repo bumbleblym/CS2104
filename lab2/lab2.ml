@@ -163,14 +163,15 @@ fold_tree (fun x -> [x]) (fun a b c -> a :: b @ c) t1;;
   Show how map_tree can be implemented in terms of folr_tree.
    
 *)
+let map_tree2 (f: 'a -> 'b) (t: 'a tree) : 'b tree =
+  let f1 v = Leaf (f v) in
+  let f2 v lt rt = Node (f v, lt, rt) in
+  fold_tree f1 f2 t;;
 
-let map_tree2 (f:'a -> 'b) (t:'a tree) : 'b tree =
-  failwith "this is to be implemented in terms of fold_tree";;
-    
 (* please remember to add ;; above which can optionally be used to *)
 (* separate global declarations but must be present if *)
 (* you have a global expression after your declaration like below *)
-map_tree2 (fun x -> 2*x) t2;;
+map_tree2 (fun x -> 2 * x) t2;;
 (* Expecting:  Node (8, Node (6, Leaf 2, Leaf 4), Node (6, Leaf 2, Leaf 4)) *)
 
 (*
