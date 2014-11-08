@@ -113,28 +113,31 @@ let sum_of_mix_list (ms: uprim list) : int =
        and write functions that are isormoprhic to those
        found in Q4.
 *)
-type ('a,'b) sum = L of 'a | R of 'b;;
+type ('a, 'b) sum = L of 'a | R of 'b;;
 
-type uprim2 = (int,(float,string) sum) sum;;
+type uprim2 = (int, (float, string) sum) sum;;
 
-let mk_I (v:int) = L v  (* makes an integer value *)
-let mk_F (f:float) = R (L f) (* makes a float value *)
-let mk_S (s:string) = R (R s) (* makes a string value *)
+let mk_I (v: int) = L v  (* makes an integer value *)
+let mk_F (f: float) = R (L f) (* makes a float value *)
+let mk_S (s: string) = R (R s) (* makes a string value *)
 
 let mix_ls2 = [mk_I 3; mk_F 4.3; mk_S "hello"; mk_I 4];;
 
-print_endline ("mix_ls2 has length "^(string_of_int (List.length mix_ls2)));;
-List.rev  mix_ls2;;
+print_endline ("mix_ls2 has length " ^ string_of_int (List.length mix_ls2));;
+List.rev mix_ls2;;
 
 let value_of_mix2 up =
   match up with
-    | L v -> v
-    | R (L v) -> (int_of_float v) (* truncates the float value *)
-    | R (R s) -> (String.length s) (* length of string *)
+  | L v -> v
+  | R (L v) -> int_of_float v (* truncates the float value *)
+  | R (R s) -> String.length s;; (* length of string *)
 
 let sum_of_mix_list2 (ms: uprim2 list) : int =
-  failwith "sum_of_mix_list2 to be implemented"
-
+  let rec aux sum xs =
+    match xs with
+    | [] -> sum
+    | x :: xs -> aux (sum + value_of_mix2 x) xs
+  in aux 0 ms;;
 
 (* 
   Q6 : Consider a polymorphic tree.
