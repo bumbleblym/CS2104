@@ -83,18 +83,23 @@ let average (xs: int list) : float =
   elements. You are to use the |> operator as
   below in your median method.
 *)
-
-let ( |> ) (x:'a) (f:'a->'b) : 'b =  f x;;
+let (|>) (x: 'a) (f: 'a ->'b) : 'b = f x;;
 
 (* your implementation for mid need not use higher-order functions *)
-let mid (xs:int list) : float 
+let mid (xs: int list) : float =
   (* pre: input list is sorted *)
-  = failwith "to return the median value of a sorted list"
-    
+  match xs with
+  | [] -> failwith "empty list"
+  | _ ->
+    let len = List.length xs in
+    let m1 = float_of_int (List.nth xs ((len - 1) / 2)) in
+    let m2 = float_of_int (List.nth xs (len / 2)) in
+    m1 +. (m2 -. m1) /. 2.;;
+
 let median xs =
-  xs 
-  |> sort  
-  |> mid
+  xs
+  |> sort
+  |> mid;;
 
 (* 
   Q5 : Higher-Order functions for Trees
