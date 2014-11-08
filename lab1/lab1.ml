@@ -88,22 +88,25 @@ let sort xs =
        Compute the sum of mixed list using the value_of_mix
        function.
 *)
-type uprim = I of int | F of float | S of string ;;
+type uprim = I of int | F of float | S of string;;
 
 let mix_ls = [I 3; F 4.3; S "hello"; I 4];;
 
-print_endline ("mix_ls has length "^(string_of_int (List.length mix_ls)));;
-List.rev  mix_ls;;
+print_endline ("mix_ls has length " ^ string_of_int (List.length mix_ls));;
+List.rev mix_ls;;
 
 let value_of_mix up =
   match up with
-    | I v -> v
-    | F v -> (int_of_float v) (* truncates the float value *)
-    | S s -> (String.length s) (* length of string *)
+  | I v -> v
+  | F v -> int_of_float v (* truncates the float value *)
+  | S s -> String.length s;; (* length of string *)
 
 let sum_of_mix_list (ms: uprim list) : int =
-  failwith "sum_of_mix_list to be implemented"
-
+  let rec aux sum xs =
+    match xs with
+    | [] -> sum
+    | x :: xs -> aux (sum + value_of_mix x) xs
+  in aux 0 ms;;
 
 (* 
   Q5 : Let us define uprim using the basic sum type instead,
