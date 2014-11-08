@@ -63,15 +63,19 @@ let rec last_two (xs: 'a list) : 'a * 'a =
            (Hint : use the as-pattern notation)
       (ii) implement a recursive sort method
 *)
-
 let rec insert x ys =
   match ys with
-    | [] -> [x]
-    | y::ys -> 
-          if x<=y then x::y::ys
-          else y::(insert x ys)
-let sort xs=
-  failwith "sort method based on insertion sort"
+  | [] -> [x]
+  | y :: ys as xs ->
+      if x <= y then x :: xs
+      else y :: insert x ys;;
+
+let sort xs =
+  let rec aux sorted unsorted =
+    match unsorted with
+    | [] -> sorted
+    | x :: xs -> aux (insert x sorted) xs
+  in aux [] xs;;
 
 (* 
   Q4 : Consider a uprim type to capture either 
