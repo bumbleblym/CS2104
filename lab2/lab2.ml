@@ -355,51 +355,60 @@ fib 4 => 5
      the calls. 
 
 *)
-
-let wrapper (pre:'a->'v) (post:'v->'b->unit)
-    (post_exc: 'v->exn->unit) 
-    (f:'a->'b) (x:'a) : 'b =
+let wrapper
+    (pre: 'a -> 'v)
+    (post: 'v -> 'b -> unit)
+    (post_exc: 'v -> exn -> unit)
+    (f: 'a -> 'b)
+    (x: 'a) : 'b =
   let v = pre x in
-  try 
+  try
     let r = f x in
     let () = post v r in
     r
-  with e -> 
-    let () = post_exc v e in
-    raise e;;
+  with e ->
+      let () = post_exc v e in
+      raise e;;
 
-let out_print x = print_endline x
+let out_print x = print_endline x;;
 
 (* function tracing *)
 let tracer fn_str pr_arg pr_res f x =
-   wrapper 
-    (fun x -> fn_str^" "^(pr_arg x))
-    (fun v r -> out_print (v^" => "^(pr_res r)))
-    (fun v e -> out_print (v^" => Exception"))
-    f x
+  wrapper
+    (fun x -> fn_str ^ " " ^ pr_arg x)
+    (fun v r -> out_print (v ^ " => " ^ pr_res r))
+    (fun v e -> out_print (v ^ " => Exception"))
+    f x;;
 
 (* non-recursive tracing of just the first call *)
-let rec fib n = 
-    if n<=1 then 1
-    else fib (n-1)+(fib(n-2));;
-let fib1 n = 
-    tracer "fib" string_of_int string_of_int fib n
+let rec fib n =
+  if n <= 1 then 1
+  else fib (n - 1) + fib (n - 2);;
+
+let fib1 n =
+  tracer "fib" string_of_int string_of_int fib n
 
 (* recursive tracing of all calls *)
-let rec fib2 n = 
-    tracer "fib" string_of_int string_of_int aux n
-and aux n = 
-    if n<=1 then 1
-    else fib2 (n-1)+(fib2(n-2));;
+let rec fib2 n =
+  tracer "fib" string_of_int string_of_int aux n
+and aux n =
+  if n <= 1 then 1
+  else fib2 (n - 1) + fib2 (n - 2);;
 
 (* selective function tracing *)      
-let trace_test (fn_str:string) (pr_test:'a->bool) 
-  (pr_arg:'a->string) (pr_res:'b->string) (f:'a->'b) (x:'a) : 'b =
-  failwith "use wrapper to implement a selective function tracing"
+let trace_test
+    (fn_str: string)
+    (pr_test: 'a -> bool)
+    (pr_arg: 'a -> string)
+    (pr_res: 'b -> string)
+    (f: 'a -> 'b)
+    (x: 'a) : 'b =
+      if pr_test x then tracer fn_str pr_arg pr_res f x
+      else f x;;
 
 (* selective tracing of calls *)
-let rec fib3 n = 
-    trace_test "fib" (fun x -> x>1) string_of_int string_of_int aux n
-and aux n = 
-    if n<=1 then 1
-    else fib3 (n-1)+(fib3(n-2));;
+let rec fib3 n =
+  trace_test "fib" (fun x -> x > 1) string_of_int string_of_int aux n
+and aux n =
+  if n <= 1 then 1
+  else fib3 (n - 1) + fib3 (n - 2);;
