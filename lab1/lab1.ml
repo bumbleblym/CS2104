@@ -145,14 +145,15 @@ let sum_of_mix_list2 (ms: uprim2 list) : int =
        Write a function that will return the largest value in
        the tree. You may use the max function.
 *)
-type 'aa btree = Leaf of 'aa | Node of 'aa * ('aa btree) * ('aa btree) ;;
+type 'aa btree = Leaf of 'aa | Node of 'aa * 'aa btree * 'aa btree;;
 let t1 = Leaf 3;;
-let t2 = Node(4,t1,t1);;
-let t2 = Node(6,t2,t1);;
+let t2 = Node (4, t1, t1);;
+let t2 = Node (6, t2, t1);;
 
 let rec max_tree (t: int btree) : int =
-  failwith "max_tree to be implemented"
-
+  match t with
+  | Leaf v -> v
+  | Node (v, lt, rt) -> max v (max (max_tree lt) (max_tree rt));;
 
 (* 
   Q7 : Below is a function that will flatten a tree into a list
