@@ -206,11 +206,12 @@ let rec power (x: int) (n: int) : int =
        result in a 3rd paramater, called acc, as shown below?
 
 *)
-let power2 (x:int) (n:int) : int =
-  let rec aux x n acc = 
-    failwith "power2 is yet to be implemented"
-  in aux x n 1
-
+let power2 (x: int) (n: int) : int =
+  assert (n >= 0);
+  let rec aux x n acc =
+    if n == 0 then acc
+    else aux x (n - 1) (acc * x)
+  in aux x n 1;;
 
 (* 
   Q10 : 
