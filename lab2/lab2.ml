@@ -117,42 +117,43 @@ let median xs =
   used as test cases for your implementation.
    
 *)
-
-type 'a tree = 
+type 'a tree =
   | Leaf of 'a
-  | Node of 'a * ('a tree) * ('a tree);;
+  | Node of 'a * 'a tree * 'a tree;;
 
-let t1 = Node (3,Leaf 1, Leaf 2);;
-let t2 = Node (4,t1,t1);;
-let t3 = Node (5,t2,t1);;
+let t1 = Node (3, Leaf 1, Leaf 2);;
+let t2 = Node (4, t1, t1);;
+let t3 = Node (5, t2, t1);;
 
-let rec map_tree (f:'a -> 'b) (t:'a tree) : 'b tree =
-  failwith "to map a function to each node and leave"
+let rec map_tree (f: 'a -> 'b) (t: 'a tree) : 'b tree =
+  match t with
+  | Leaf v -> Leaf (f v)
+  | Node (v, lt, rt) -> Node (f v, lt, rt);;
 (* 
    map_tree f (Node a1,Leaf a2,Leaf a3) 
     ==> Node (f a1, Leaf (f a2), Leaf (f a3))
 *)
 
-let fold_tree (f1:'a->'b) (f2:'a->'b->'b->'b) (t:'a tree) : 'b =
-  failwith "to reduce a tree with f1,f2 to a value of output 'b type"
+let rec fold_tree (f1: 'a -> 'b) (f2: 'a -> 'b -> 'b -> 'b) (t: 'a tree) : 'b =
+  match t with
+  | Leaf v -> f1 v
+  | Node (v, lt, rt) -> f2 v (fold_tree f1 f2 lt) (fold_tree f1 f2 rt);;
 (* 
    fold_tree f1 f2 (Node a1,Leaf a2,Leaf a3) 
     ==> f2 a2 (f1 a1) (f1 a1)
 *)
-  
 
-let t4=map_tree (fun x -> 2*x) t3;;
+let t4 = map_tree (fun x -> 2 * x) t3;;
 (* expecting a doubled version of t3
    Node (10, Node (8, Node (6, Leaf 2, Leaf 4), Node (6, Leaf 2, Leaf 4)),
      Node (6, Leaf 2, Leaf 4))
 *)
-fold_tree (fun x -> x) (fun a b c -> a+b+c) t3;;
+fold_tree (fun x -> x) (fun a b c -> a + b + c) t3;;
 (* expecting 27 *)
-fold_tree (fun x -> [x]) (fun a b c -> b@(a::c)) t1;;
+fold_tree (fun x -> [x]) (fun a b c -> b @ a :: c) t1;;
 (* in-order traversal [1; 3; 2] *)
-fold_tree (fun x -> [x]) (fun a b c -> a::(b@c)) t1;;
+fold_tree (fun x -> [x]) (fun a b c -> a :: b @ c) t1;;
 (* pre-order traversal [3; 1; 3] *)
-
 
 (*
  
