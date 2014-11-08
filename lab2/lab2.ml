@@ -12,19 +12,20 @@
   Consider the last function below.
   Re-implement it using fold_left.
 *)
-
-let last (xs:'a list) : 'a =
+let last (xs: 'a list) : 'a =
   let rec aux xs prev =
     match xs with
     | [] -> prev
-    | x::ys -> aux ys x in
+    | x :: ys -> aux ys x in
   match xs with
   | [] -> failwith "no last element"
-  | x::xs -> aux xs x
+  | x :: xs -> aux xs x;;
 
 (* replace failwith by your code *)
-let last2 (xs:'a list) : 'a =
-  failwith "to be implemented using List.fold_left"
+let last2 (xs: 'a list) : 'a =
+  match xs with
+  | [] -> failwith "no last element"
+  | x :: xs -> List.fold_left (fun _ x -> x) x xs;;
 
 (* 
   Q2 : Sorting
