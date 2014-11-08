@@ -164,15 +164,15 @@ let rec max_tree (t: int btree) : int =
 *)
 let rec flatten_infix (t: 'a btree) : 'a list =
   match t with
-    | Leaf v -> [v]
-    | Node(v,lt,rt) -> (flatten_infix lt)@[v]@(flatten_infix rt)
+  | Leaf v -> [v]
+  | Node (v, lt, rt) -> flatten_infix lt @ [v] @ flatten_infix rt;;
 
 let flatten_prefix (t: 'a btree) : 'a list =
   let rec aux t =
     match t with
-      | Leaf v -> [v]
-      | Node(v,lt,rt) -> failwith "max_tree to be implemented"
-  in aux t
+    | Leaf v -> [v]
+    | Node(v, lt, rt) ->  [v] @ aux lt @ aux rt
+  in aux t;;
 
 (* 
   Q8 : The power function takes two arguments x n so as
