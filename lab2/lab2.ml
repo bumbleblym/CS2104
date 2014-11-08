@@ -283,25 +283,28 @@ let test t =
   of its list. You should make use of the |> operator and write it
   in a similar style as pr_list2.
 *)
+let pr_list2 (pr: 'a -> string) (xs: 'a list) : string =
+  "["
+  ^ (xs |> List.map pr |> String.concat "; ")
+  ^ "]";;
 
-let pr_list2 (pr:'a->string) (xs:'a list) : string
- = "[" ^ (xs |> List.map pr 
-             |> String.concat "; ") ^ "]";;
-
-let add_num (xs:'a list) : (int * 'a) list =
+let add_num (xs: 'a list) : (int * 'a) list =
   let rec aux xs n =
-    match xs with 
+    match xs with
     | [] -> []
-    | x::xs -> (n,x)::(aux xs (n+1))
+    | x :: xs -> (n, x) :: aux xs (n + 1)
   in aux xs 1;;
-  
-let ls =  ["This";"is";"a";"numbered";"list"];;
+
+let ls = ["This"; "is"; "a"; "numbered"; "list"];;
 
 let pr_id x = x;;
 
-let pr_list_num (sep:string) (pr:'a->string) (xs:'a list) : string
-      = failwith "to be implemented"
- 
+let pr_list_num (sep: string) (pr: 'a -> string) (xs: 'a list) : string =
+  xs
+  |> List.mapi (fun i s -> "(" ^ string_of_int (i + 1) ^ ")" ^ pr s)
+  |> String.concat sep
+  |> fun s -> "[" ^ s ^ "]";;
+
 let test_num sep pr xs =
   let s = pr_list_num sep pr xs in
   print_endline s;;
