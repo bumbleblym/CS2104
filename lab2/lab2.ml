@@ -46,12 +46,14 @@ let rec sort xs =
   | y :: ys -> insert y (sort ys);;
 
 (* replace failwith by your code *)
-let rec insert2 x ys =
-  match ys with
-  | [] -> [x]
-  | y :: ys as xs ->
-      if x <= y then x :: xs
-      else y :: List.fold_right insert2 [x] ys;;
+let insert2 x ys =
+  let aux a xs =
+    match xs with
+    | [] -> [a]
+    | x :: xs as ys ->
+      if a > x then x :: a :: xs
+      else a :: ys
+  in List.fold_right aux ys [x];;
 
 let sort2 xs =
   List.fold_right insert2 xs [];;
