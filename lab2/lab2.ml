@@ -50,8 +50,8 @@ let rec insert2 x ys =
   match ys with
   | [] -> [x]
   | y :: ys as xs ->
-    if x <= y then x :: xs
-    else y :: List.fold_right insert2 [x] ys;;
+      if x <= y then x :: xs
+      else y :: List.fold_right insert2 [x] ys;;
 
 let sort2 xs =
   List.fold_right insert2 xs [];;
@@ -234,8 +234,8 @@ let pr_tree (pr: 'a -> string) (xs: 'a tree) : string =
 let rec fold_tree_acc
     (f1: 'a -> 'c -> 'b)
     (f2: 'a -> 'b -> 'b -> 'c -> 'b)
-    (f3 : 'c -> 'c)
-    (acc : 'c)
+    (f3: 'c -> 'c)
+    (acc: 'c)
     (t: 'a tree) : 'b =
   match t with
   | Leaf v -> f1 v acc
@@ -403,8 +403,8 @@ let trace_test
     (pr_res: 'b -> string)
     (f: 'a -> 'b)
     (x: 'a) : 'b =
-      if pr_test x then tracer fn_str pr_arg pr_res f x
-      else f x;;
+  if pr_test x then tracer fn_str pr_arg pr_res f x
+  else f x;;
 
 (* selective tracing of calls *)
 let rec fib3 n =

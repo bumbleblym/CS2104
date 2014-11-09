@@ -171,7 +171,7 @@ let flatten_prefix (t: 'a btree) : 'a list =
   let rec aux t =
     match t with
     | Leaf v -> [v]
-    | Node(v, lt, rt) ->  [v] @ aux lt @ aux rt
+    | Node(v, lt, rt) -> [v] @ aux lt @ aux rt
   in aux t;;
 
 (* 
