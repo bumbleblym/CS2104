@@ -236,28 +236,28 @@ let pr_tree (pr: 'a -> string) (xs: 'a tree) : string =
 let rec fold_tree_acc
     (f1: 'a -> 'c -> 'b)
     (f2: 'a -> 'b -> 'b -> 'c -> 'b)
-    (f3: 'c -> 'c)
+    (f3: 'a -> 'c -> 'c)
     (acc: 'c)
     (t: 'a tree) : 'b =
   match t with
   | Leaf v -> f1 v acc
   | Node (v, lt, rt) ->
       f2 v
-        (fold_tree_acc f1 f2 f3 (f3 acc) lt)
-        (fold_tree_acc f1 f2 f3 (f3 acc) rt)
+        (fold_tree_acc f1 f2 f3 (f3 v acc) lt)
+        (fold_tree_acc f1 f2 f3 (f3 v acc) rt)
         acc;;
 
 let pr_tree2 (pr: 'a -> string) (xs: 'a tree) : string =
   let f1 v acc = acc ^ "Leaf " ^ pr v ^ "\n" in
   let f2 v lt rt acc = acc ^ "Node " ^ pr v ^ "\n" ^ lt ^ rt in
-  let f3 acc = acc ^ "  " in
+  let f3 _ acc = acc ^ "  " in
   fold_tree_acc f1 f2 f3 "" xs;;
 
 (* please change failwith .. to your implementation *)
 let pr_tree_infix (pr: 'a -> string) (xs: 'a tree) : string =
   let f1 v acc = acc ^ "Leaf " ^ pr v ^ "\n" in
   let f2 v lt rt acc = lt ^ acc ^ "Node " ^ pr v ^ "\n" ^ rt in
-  let f3 acc = acc ^ "  " in
+  let f3 _ acc = acc ^ "  " in
   fold_tree_acc f1 f2 f3 "" xs;;
 
 let test t =
