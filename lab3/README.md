@@ -41,7 +41,7 @@ Among these three, this is the best alignment.
 
    G ATCG GCAT  
    CAAT GTGAATC  
-   -*++*+*+-++*  
+   -\*++\*+\*+-++\*  
    Score : -4
 
 2. Using memorization, drastically improve the performance of your algorithm. If you like, you may use an OCaml object and Hash Table.
