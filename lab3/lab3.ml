@@ -38,3 +38,24 @@ let score (xs: string) (ys: string) =
 let ans1 = score "A" "A";;
 let ans2 = score "A" "AB";;
 let ans3 = score "GATCGGCAT" "CAATGTGAATC";;
+
+let pprint (result: int * string * string) : unit =
+  let alignment (xs: string) (ys: string) : string =
+    let sym (x: char) (y: char) : char =
+      if x = y then '+'
+      else if x = ' ' || y = ' ' then '*'
+      else '-'
+    in let len = String.length xs in
+    let rec aux (idx: int) (acc: string) =
+      if idx = len then acc
+      else aux (idx + 1) (acc ^ String.make 1 (sym (String.get xs idx) (String.get ys idx)))
+  in aux 0 ""
+  in let (score, xs, ys) = result in
+  print_endline xs;
+  print_endline ys;
+  print_endline (alignment xs ys);
+  print_endline ("Score: " ^ string_of_int score);;
+
+pprint ans1;;
+pprint ans2;;
+pprint ans3;;
