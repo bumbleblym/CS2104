@@ -18,7 +18,7 @@ let score (xs: string) (ys: string) =
       let pts = pts_space * num in
       let xs' = String.sub xs xi num in
       let ys' = String.make num ' ' in
-      (pts, xs', ys') 
+      (pts, xs', ys')
     else if (xi == x_len) then
       let num = y_len - yi in
       let pts = pts_space * num in
@@ -49,7 +49,7 @@ let pprint (result: int * string * string) : unit =
     let rec aux (idx: int) (acc: string) =
       if idx = len then acc
       else aux (idx + 1) (acc ^ String.make 1 (sym (String.get xs idx) (String.get ys idx)))
-  in aux 0 ""
+    in aux 0 ""
   in let (score, xs, ys) = result in
   print_endline xs;
   print_endline ys;
